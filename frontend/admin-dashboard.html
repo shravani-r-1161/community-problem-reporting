@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommunityConnect - Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f5fa;
+            color: #263247;
+        }
+
+        header {
+            background: #172b4d;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        header p {
+            margin-top: 7px;
+            color: #dbe5f5;
+        }
+
+        button {
+            padding: 11px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #2457c5;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .logout {
+            background: #dc4545;
+        }
+
+        main {
+            padding: 30px 5%;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 23px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #0000000d;
+            border-left: 5px solid #2457c5;
+        }
+
+        .stat-card h2 {
+            font-size: 32px;
+            margin-top: 12px;
+        }
+
+        .stat-card p {
+            color: #64748b;
+        }
+
+        .pending {
+            border-color: #e5a000;
+        }
+
+        .progress {
+            border-color: #2684d8;
+        }
+
+        .resolved {
+            border-color: #219653;
+        }
+
+        .section-heading {
+            margin-bottom: 18px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 12px;
+            border: 1px solid #ccd3df;
+            border-radius: 6px;
+            background: white;
+            min-width: 180px;
+        }
+
+        .complaint-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 20px;
+        }
+
+        .complaint-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        .complaint-card h3 {
+            margin-bottom: 15px;
+            color: #172b4d;
+        }
+
+        .complaint-card p {
+            margin: 10px 0;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .complaint-card img {
+            width: 100%;
+            max-height: 210px;
+            object-fit: contain;
+            margin: 12px 0;
+            border-radius: 7px;
+            background: #f3f5fa;
+        }
+
+        .status-select {
+            width: 100%;
+            padding: 11px;
+            margin: 12px 0;
+            border: 1px solid #ccd3df;
+            border-radius: 6px;
+        }
+
+        .update-button {
+            width: 100%;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+            background: white;
+            border-radius: 10px;
+            grid-column: 1 / -1;
+        }
+
+        #message {
+            margin-bottom: 15px;
+            color: #c0392b;
+        }
+
+        @media(max-width: 800px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>CommunityConnect Admin</h1>
+        <p id="adminName">Administrator Dashboard</p>
+    </div>
+
+    <button class="logout" onclick="logoutAdmin()">Logout</button>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <h2>Dashboard Overview</h2>
+        <p>Monitor and manage community complaints.</p>
+    </section>
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <p>Total Complaints</p>
+            <h2 id="totalCount">0</h2>
+        </div>
+
+        <div class="stat-card pending">
+            <p>Pending</p>
+            <h2 id="pendingCount">0</h2>
+        </div>
+
+        <div class="stat-card progress">
+            <p>In Progress</p>
+            <h2 id="progressCount">0</h2>
+        </div>
+
+        <div class="stat-card resolved">
+            <p>Resolved</p>
+            <h2 id="resolvedCount">0</h2>
+        </div>
+
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2>All Community Complaints</h2>
+            <p>View and update complaints submitted by citizens.</p>
+        </div>
+
+        <div class="filters">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by title or location"
+            >
+
+            <select id="statusFilter">
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+
+            <select id="categoryFilter">
+                <option value="All">All Categories</option>
+            </select>
+
+            <button onclick="loadComplaints()">Refresh</button>
+
+        </div>
+
+        <p id="message"></p>
+
+        <div class="complaint-list" id="complaintList">
+            <div class="empty">Loading complaints...</div>
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+    const API_URL = "http://127.0.0.1:5000/api";
+
+    const adminData = sessionStorage.getItem("communityAdmin");
+
+    if (!adminData) {
+        window.location.replace("admin.html");
+    }
+
+    const admin = adminData ? JSON.parse(adminData) : null;
+
+    let allComplaints = [];
+
+    if (admin) {
+        document.getElementById("adminName").textContent =
+            "Welcome, " + admin.name;
+
+        loadComplaints();
+    }
+
+    async function loadComplaints() {
+
+        const list = document.getElementById("complaintList");
+        const message = document.getElementById("message");
+
+        list.innerHTML = '<div class="empty">Loading complaints...</div>';
+        message.textContent = "";
+
+        try {
+            const response = await fetch(
+                `${API_URL}/admin/complaints?admin_id=${admin.id}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Unable to load complaints");
+            }
+
+            allComplaints = data;
+
+            updateStatistics();
+            populateCategories();
+            displayComplaints();
+
+        } catch (error) {
+            list.innerHTML = "";
+            message.textContent = error.message;
+        }
+    }
+
+    function updateStatistics() {
+
+        document.getElementById("totalCount").textContent =
+            allComplaints.length;
+
+        document.getElementById("pendingCount").textContent =
+            allComplaints.filter(c => c.status === "Pending").length;
+
+        document.getElementById("progressCount").textContent =
+            allComplaints.filter(c => c.status === "In Progress").length;
+
+        document.getElementById("resolvedCount").textContent =
+            allComplaints.filter(c => c.status === "Resolved").length;
+    }
+
+    function populateCategories() {
+
+        const select = document.getElementById("categoryFilter");
+        const selected = select.value;
+
+        const categories = [
+            ...new Set(allComplaints.map(c => c.category))
+        ];
+
+        select.innerHTML = '<option value="All">All Categories</option>';
+
+        categories.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+        });
+
+        select.value = categories.includes(selected) ? selected : "All";
+    }
+
+    function escapeHTML(value) {
+
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+
+    function displayComplaints() {
+
+        const list = document.getElementById("complaintList");
+
+        const search = document.getElementById("searchInput")
+            .value.toLowerCase();
+
+        const status = document.getElementById("statusFilter").value;
+        const category = document.getElementById("categoryFilter").value;
+
+        const filtered = allComplaints.filter(c => {
+
+            const matchesSearch =
+                (c.title || "").toLowerCase().includes(search) ||
+                (c.location || "").toLowerCase().includes(search);
+
+            const matchesStatus =
+                status === "All" || c.status === status;
+
+            const matchesCategory =
+                category === "All" || c.category === category;
+
+            return matchesSearch && matchesStatus && matchesCategory;
+        });
+
+        list.innerHTML = "";
+
+        if (filtered.length === 0) {
+            list.innerHTML =
+                '<div class="empty">No complaints found.</div>';
+            return;
+        }
+
+        filtered.forEach(c => {
+
+            const card = document.createElement("div");
+            card.className = "complaint-card";
+
+            card.innerHTML = `
+                <h3>${escapeHTML(c.title)}</h3>
+
+                <p><strong>Complaint ID:</strong>
+                    ${escapeHTML(c.complaint_id)}</p>
+
+                <p><strong>Category:</strong>
+                    ${escapeHTML(c.category)}</p>
+
+                <p><strong>Description:</strong>
+                    ${escapeHTML(c.description)}</p>
+
+                <p><strong>Location:</strong>
+                    ${escapeHTML(c.location)}</p>
+
+                <p><strong>Reported By:</strong>
+                    ${escapeHTML(c.user_name)}</p>
+
+                <p><strong>Date:</strong>
+                    ${escapeHTML(c.created_at)}</p>
+
+                <p><strong>Current Status:</strong>
+                    ${escapeHTML(c.status)}</p>
+
+                ${c.image
+                    ? `<img src="${escapeHTML(c.image)}" alt="Complaint image">`
+                    : ""}
+
+                <label><strong>Update Status</strong></label>
+
+                <select class="status-select">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+
+                <button class="update-button">Update Status</button>
+            `;
+
+            const select = card.querySelector(".status-select");
+            select.value = c.status;
+
+            card.querySelector(".update-button").addEventListener(
+                "click",
+                () => updateStatus(c.complaint_id, select.value)
+            );
+
+            list.appendChild(card);
+        });
+    }
+
+    async function updateStatus(complaintId, newStatus) {
+
+        try {
+            const response = await fetch(
+                `${API_URL}/admin/complaints/${encodeURIComponent(complaintId)}/status`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        admin_id: admin.id,
+                        status: newStatus
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Status update failed");
+            }
+
+            alert("Complaint status updated successfully!");
+
+            await loadComplaints();
+
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    document.getElementById("searchInput")
+        .addEventListener("input", displayComplaints);
+
+    document.getElementById("statusFilter")
+        .addEventListener("change", displayComplaints);
+
+    document.getElementById("categoryFilter")
+        .addEventListener("change", displayComplaints);
+
+    function logoutAdmin() {
+        sessionStorage.removeItem("communityAdmin");
+        window.location.replace("admin.html");
+    }
+</script>
+
+</body>
+</html>

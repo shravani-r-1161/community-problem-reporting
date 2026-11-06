@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommunityConnect - Admin Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2f8;
+        }
+
+        .login-card {
+            width: 90%;
+            max-width: 420px;
+            padding: 35px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px #00000015;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2457c5;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #2457c5;
+            border-color: #2457c5;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 22px;
+            background: #2457c5;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #19449e;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+            color: #c0392b;
+        }
+
+        #message.success {
+            color: #15803d;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2457c5;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+
+        <div class="logo">CommunityConnect</div>
+
+        <h2>Admin Login</h2>
+
+        <p class="subtitle">
+            Sign in to manage community complaints
+        </p>
+
+        <form id="adminLoginForm">
+
+            <label for="email">Admin Email</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter admin email"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit" id="loginButton">
+                Login as Admin
+            </button>
+
+        </form>
+
+        <p id="message" role="status"></p>
+
+        <a class="back-link" href="index.html">
+            Back to Citizen Login
+        </a>
+
+    </div>
+
+    <script>
+
+        const API_URL = "http://127.0.0.1:5000/api";
+
+        const loginForm = document.getElementById("adminLoginForm");
+        const message = document.getElementById("message");
+        const loginButton = document.getElementById("loginButton");
+
+        loginForm.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value;
+
+            message.className = "";
+            message.textContent = "Checking admin credentials...";
+
+            loginButton.disabled = true;
+            loginButton.textContent = "Please wait...";
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}/auth/login`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                console.log("Login HTTP status:", response.status);
+                console.log("Login response:", data);
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || `Login failed (${response.status})`
+                    );
+                }
+
+                if (!data.user) {
+                    throw new Error("Invalid response from server.");
+                }
+
+                if (data.user.role !== "admin") {
+                    throw new Error(
+                        "This account is not an administrator account."
+                    );
+                }
+
+                sessionStorage.setItem(
+                    "communityAdmin",
+                    JSON.stringify(data.user)
+                );
+
+                message.className = "success";
+                message.textContent = "Login successful! Opening dashboard...";
+
+                window.location.href = "admin-dashboard.html";
+
+            } catch (error) {
+
+                console.error("Admin login error:", error);
+
+                message.className = "";
+                message.textContent = error.message;
+
+            } finally {
+
+                loginButton.disabled = false;
+                loginButton.textContent = "Login as Admin";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
