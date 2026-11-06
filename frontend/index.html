@@ -4,480 +4,491 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>CommunityConnect | Community Problem Reporting</title>
-
     <link rel="stylesheet" href="css/style.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- NAVIGATION BAR -->
-<header class="navbar">
+<!-- ================= AUTHENTICATION SCREEN ================= -->
 
-    <a href="#home" class="logo">
-        <span class="logo-icon">C</span>
-        Community<span class="logo-highlight">Connect</span>
-    </a>
+<div id="authScreen" class="auth-screen">
 
-    <nav class="nav-links">
-        <a href="#home" onclick="showSection('home')">Home</a>
-        <a href="#about" onclick="showSection('home')">About</a>
-        <a href="#report" onclick="showSection('report')">Report Problem</a>
-        <a href="#complaints" onclick="showSection('complaints')">My Complaints</a>
-    </nav>
-
-    <div class="nav-buttons">
-        <button class="btn btn-outline" onclick="showSection('login')">Login</button>
-        <button class="btn btn-primary" onclick="showSection('register')">Register</button>
+    <div class="auth-brand">
+        <div class="brand-logo">C</div>
+        <h1>Community<span>Connect</span></h1>
+        <p>Your Community. Your Voice. Our Responsibility.</p>
     </div>
 
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="auth-card">
 
-</header>
+        <div class="auth-tabs">
+            <button id="loginTab" class="auth-tab active" type="button" onclick="showAuthForm('login')">Login</button>
+            <button id="registerTab" class="auth-tab" type="button" onclick="showAuthForm('register')">Register</button>
+        </div>
 
-<main>
+        <!-- LOGIN FORM -->
+        <div id="loginPanel">
 
-<!-- HOME PAGE -->
-<section id="home" class="page-section active">
+            <h2>Welcome Back!</h2>
+            <p class="auth-description">Login to report and track community problems.</p>
 
-    <div class="hero">
+            <form id="loginForm">
 
-        <div class="hero-content">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" required>
 
-            <span class="tag">BUILD A BETTER COMMUNITY</span>
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
 
-            <h1>
-                Your Community.<br>
-                Your Voice.<br>
-                <span>Our Responsibility.</span>
-            </h1>
+                <button type="submit" class="primary-btn full-btn">Login to Account</button>
 
-            <p>
-                See a problem in your neighbourhood?
-                Don't ignore it. Report it, track its progress
-                and help make your community a better place.
+            </form>
+
+            <p class="auth-switch">
+                Don't have an account?
+                <a href="#" onclick="showAuthForm('register'); return false;">Register here</a>
             </p>
 
-            <div class="hero-buttons">
-
-                <button class="btn btn-primary btn-large"
-                    onclick="showSection('report')">
-                    Report a Problem →
-                </button>
-
-                <button class="btn btn-outline btn-large"
-                    onclick="showSection('complaints')">
-                    Track Complaint
-                </button>
-
-            </div>
-
-            <div class="hero-trust">
-                <span>✓ Easy Reporting</span>
-                <span>✓ Transparent Tracking</span>
-                <span>✓ Community Driven</span>
-            </div>
-
         </div>
 
-        <!-- ACTIVITY CARD -->
-        <div class="hero-visual">
+        <!-- REGISTER FORM -->
+        <div id="registerPanel" hidden>
 
-            <div class="visual-card">
+            <h2>Create an Account</h2>
+            <p class="auth-description">Join your community and make a difference.</p>
 
-                <div class="visual-top">
-                    <span>Community Activity</span>
-                    <span class="live-dot">● Live Demo</span>
-                </div>
+            <form id="registerForm">
 
-                <div class="activity-item">
-                    <div class="activity-icon road">🚧</div>
-                    <div>
-                        <strong>Road Damage</strong>
-                        <small>Main Road, Ward 05</small>
-                    </div>
-                    <span class="status progress">In Progress</span>
-                </div>
+                <label for="regName">Full Name</label>
+                <input type="text" id="regName" placeholder="Enter your full name" required>
 
-                <div class="activity-item">
-                    <div class="activity-icon water">💧</div>
-                    <div>
-                        <strong>Water Leakage</strong>
-                        <small>Market Street, Ward 02</small>
-                    </div>
-                    <span class="status resolved">Resolved</span>
-                </div>
+                <label for="regEmail">Email Address</label>
+                <input type="email" id="regEmail" placeholder="Enter your email" required>
 
-                <div class="activity-item">
-                    <div class="activity-icon waste">🗑️</div>
-                    <div>
-                        <strong>Garbage Overflow</strong>
-                        <small>Park Road, Ward 03</small>
-                    </div>
-                    <span class="status pending">Pending</span>
-                </div>
+                <label for="regPhone">Phone Number</label>
+                <input type="tel" id="regPhone" placeholder="10-digit phone number" pattern="[0-9]{10}" required>
 
-                <div class="community-message">
-                    <span>🌱</span>
-                    <div>
-                        <strong>Small actions create big changes!</strong>
-                        <small>Be the change your community needs.</small>
-                    </div>
-                </div>
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" placeholder="At least 8 characters" minlength="8" required>
 
-            </div>
+                <button type="submit" class="primary-btn full-btn">Create Account</button>
+
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="#" onclick="showAuthForm('login'); return false;">Login here</a>
+            </p>
+
         </div>
 
     </div>
 
-    <!-- STATISTICS -->
-    <div class="stats-section">
+    <p class="auth-footer">© 2026 CommunityConnect | PS-14 Hackathon Project</p>
 
-        <div class="stat-card">
-            <h2 id="totalReports">0</h2>
-            <p>Problems Reported</p>
-        </div>
+</div>
 
-        <div class="stat-card">
-            <h2 id="resolvedReports">0</h2>
-            <p>Problems Resolved</p>
-        </div>
 
-        <div class="stat-card">
-            <h2>24/7</h2>
-            <p>Online Reporting</p>
-        </div>
+<!-- ================= MAIN APPLICATION ================= -->
 
-        <div class="stat-card">
-            <h2>100%</h2>
-            <p>Community Focused</p>
-        </div>
+<div id="appScreen" hidden>
 
-    </div>
+    <!-- NAVBAR -->
+    <header class="navbar">
 
-    <!-- PROBLEM CATEGORIES -->
-    <section class="content-section" id="about">
-
-        <div class="section-heading">
-
-            <span class="tag">WHAT CAN YOU REPORT?</span>
-
-            <h2>Let's Solve Community Problems Together</h2>
-
-            <p>Choose a category and improve your neighbourhood.</p>
-
-        </div>
-
-        <div class="category-grid">
-
-            <div class="category-card">
-                <span>🚧</span>
-                <h3>Road Problems</h3>
-                <p>Potholes, damaged roads and broken footpaths.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🗑️</span>
-                <h3>Garbage</h3>
-                <p>Waste accumulation and improper disposal.</p>
-            </div>
-
-            <div class="category-card">
-                <span>💧</span>
-                <h3>Water Issues</h3>
-                <p>Water leakage and water supply problems.</p>
-            </div>
-
-            <div class="category-card">
-                <span>💡</span>
-                <h3>Streetlights</h3>
-                <p>Broken streetlights and dark public areas.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🚰</span>
-                <h3>Drainage</h3>
-                <p>Blocked drains and sewage problems.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🏗️</span>
-                <h3>Infrastructure</h3>
-                <p>Damaged public facilities and structures.</p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="how-section">
-
-        <div class="section-heading">
-            <span class="tag">SIMPLE PROCESS</span>
-            <h2>How CommunityConnect Works</h2>
-        </div>
-
-        <div class="steps-grid">
-
-            <div class="step-card">
-                <div class="step-number">01</div>
-                <span>📝</span>
-                <h3>Report</h3>
-                <p>Describe the problem and upload a photograph.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">02</div>
-                <span>🔍</span>
-                <h3>Verification</h3>
-                <p>Authorities review your complaint.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">03</div>
-                <span>🛠️</span>
-                <h3>Resolution</h3>
-                <p>The responsible department works on the issue.</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">04</div>
-                <span>✅</span>
-                <h3>Improvement</h3>
-                <p>Track the progress and see the final result.</p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- CALL TO ACTION -->
-    <section class="cta-section">
-
-        <h2>Have You Noticed a Problem?</h2>
-
-        <p>Your report can make a real difference.</p>
-
-        <button class="btn btn-white btn-large"
-            onclick="showSection('report')">
-            Report It Now →
-        </button>
-
-    </section>
-
-</section>
-
-
-<!-- REPORT PROBLEM PAGE -->
-<section id="report" class="page-section inner-page">
-
-    <div class="form-container">
-
-        <span class="tag">MAKE YOUR VOICE HEARD</span>
-
-        <h2>Report a Community Problem</h2>
-
-        <p>Provide the details below to submit your complaint.</p>
-
-        <form id="reportForm">
-
-            <label>Problem Title *</label>
-            <input type="text" id="title"
-                placeholder="Example: Damaged road near school" required>
-
-            <label>Problem Category *</label>
-
-            <select id="category" required>
-                <option value="">Select a category</option>
-                <option>Road Problems</option>
-                <option>Garbage</option>
-                <option>Water Issues</option>
-                <option>Streetlights</option>
-                <option>Drainage</option>
-                <option>Infrastructure</option>
-                <option>Other</option>
-            </select>
-
-            <label>Description *</label>
-
-            <textarea id="description" rows="5"
-                placeholder="Describe the problem..." required></textarea>
-
-            <label>Location *</label>
-
-            <input type="text" id="location"
-                placeholder="Enter area, street or landmark" required>
-
-            <button type="button" class="btn btn-outline location-btn"
-                onclick="getLocation()">
-                📍 Use My Current Location
-            </button>
-
-            <label>Upload Photograph</label>
-
-            <input type="file" id="image" accept="image/*">
-
-            <div id="imagePreview"></div>
-
-            <button type="submit" class="btn btn-primary btn-large full-btn">
-                Submit Complaint →
-            </button>
-
-        </form>
-
-    </div>
-
-</section>
-
-
-<!-- MY COMPLAINTS PAGE -->
-<section id="complaints" class="page-section inner-page">
-
-    <div class="form-container wide-container">
-
-        <span class="tag">TRACK YOUR REPORTS</span>
-
-        <h2>My Complaints</h2>
-
-        <p>View complaints submitted from this browser.</p>
-
-        <div class="filter-row">
-
-            <input type="text" id="searchComplaint"
-                placeholder="Search by complaint ID or title...">
-
-            <select id="statusFilter">
-                <option value="All">All Status</option>
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-            </select>
-
-        </div>
-
-        <div id="complaintList" class="complaint-list"></div>
-
-    </div>
-
-</section>
-
-
-<!-- LOGIN PAGE -->
-<section id="login" class="page-section inner-page">
-
-    <div class="form-container auth-container">
-
-        <span class="tag">WELCOME BACK</span>
-
-        <h2>Login to Your Account</h2>
-
-        <p>Access your community reports.</p>
-
-        <form id="loginForm">
-
-            <label>Email Address</label>
-
-            <input type="email" id="loginEmail"
-                placeholder="Enter your email" required>
-
-            <label>Password</label>
-
-            <input type="password" id="loginPassword"
-                placeholder="Enter your password" required>
-
-            <button type="submit" class="btn btn-primary btn-large full-btn">
-                Login
-            </button>
-
-        </form>
-
-        <p class="auth-switch">
-            Don't have an account?
-            <a href="#register" onclick="showSection('register')">Register</a>
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- REGISTRATION PAGE -->
-<section id="register" class="page-section inner-page">
-
-    <div class="form-container auth-container">
-
-        <span class="tag">JOIN YOUR COMMUNITY</span>
-
-        <h2>Create Your Account</h2>
-
-        <p>Become a part of positive community change.</p>
-
-        <form id="registerForm">
-
-            <label>Full Name</label>
-
-            <input type="text" id="regName"
-                placeholder="Enter your name" required>
-
-            <label>Email Address</label>
-
-            <input type="email" id="regEmail"
-                placeholder="Enter your email" required>
-
-            <label>Phone Number</label>
-
-            <input type="tel" id="regPhone"
-                placeholder="Enter your phone number"
-                pattern="[0-9]{10}" required>
-
-            <label>Password</label>
-
-            <input type="password" id="regPassword"
-                placeholder="Create a password" minlength="6" required>
-
-            <button type="submit" class="btn btn-primary btn-large full-btn">
-                Create Account
-            </button>
-
-        </form>
-
-        <p class="auth-switch">
-            Already registered?
-            <a href="#login" onclick="showSection('login')">Login</a>
-        </p>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<!-- FOOTER -->
-<footer class="footer">
-
-    <div>
-        <a href="#home" class="logo footer-logo">
+        <a href="#" class="logo" onclick="showSection('home'); return false;">
+            <span class="logo-icon">C</span>
             Community<span class="logo-highlight">Connect</span>
         </a>
 
+        <nav class="nav-links" id="navLinks">
+            <a href="#" onclick="showSection('home'); return false;">Home</a>
+            <a href="#" onclick="showSection('about'); return false;">About</a>
+            <a href="#" onclick="showSection('report'); return false;">Report Problem</a>
+            <a href="#" onclick="showSection('complaints'); return false;">My Complaints</a>
+            <a href="#" onclick="showSection('account'); return false;">My Account</a>
+        </nav>
+
+        <button class="profile-nav" onclick="showSection('account')">
+            <span class="profile-avatar">👤</span>
+            <span class="profile-nav-details">
+                <strong id="navUserName">User</strong>
+                <small>My Account</small>
+            </span>
+        </button>
+
+        <button class="logout-btn" onclick="logoutUser()">Logout</button>
+
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
+
+    </header>
+
+
+    <main>
+
+        <!-- ================= HOME ================= -->
+
+        <section id="home" class="page-section active">
+
+            <div class="hero">
+
+                <div class="hero-content">
+
+                    <span class="tag">BUILD A BETTER COMMUNITY</span>
+
+                    <h1>
+                        Your Community.<br>
+                        Your Voice.<br>
+                        <span>Our Responsibility.</span>
+                    </h1>
+
+                    <p>
+                        See a problem in your neighbourhood?
+                        Don't ignore it. Report it, track its progress
+                        and help make your community a better place.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <button class="primary-btn" onclick="showSection('report')">Report a Problem →</button>
+                        <button class="outline-btn" onclick="showSection('complaints')">Track Complaint</button>
+                    </div>
+
+                    <div class="hero-trust">
+                        <span>✓ Easy Reporting</span>
+                        <span>✓ Transparent Tracking</span>
+                        <span>✓ Community Driven</span>
+                    </div>
+
+                </div>
+
+                <div class="hero-visual">
+                    <div class="visual-card">
+
+                        <div class="visual-top">
+                            <strong>Community Activity</strong>
+                            <span class="live-dot">● Live Demo</span>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">🚧</div>
+                            <div class="activity-text">
+                                <strong>Road Damage</strong>
+                                <small>Main Road, Ward 05</small>
+                            </div>
+                            <span class="status progress">In Progress</span>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">💧</div>
+                            <div class="activity-text">
+                                <strong>Water Leakage</strong>
+                                <small>Market Street, Ward 02</small>
+                            </div>
+                            <span class="status resolved">Resolved</span>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">🗑️</div>
+                            <div class="activity-text">
+                                <strong>Garbage Overflow</strong>
+                                <small>Park Road, Ward 03</small>
+                            </div>
+                            <span class="status pending">Pending</span>
+                        </div>
+
+                        <div class="community-message">
+                            🌱 <span>Small actions create big changes!</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+
+            <div class="stats-section">
+
+                <div class="stat-card">
+                    <h2 id="totalReports">0</h2>
+                    <p>Problems Reported</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="resolvedReports">0</h2>
+                    <p>Problems Resolved</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>24/7</h2>
+                    <p>Online Reporting</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>100%</h2>
+                    <p>Community Focused</p>
+                </div>
+
+            </div>
+
+
+            <!-- ABOUT AND CATEGORIES -->
+
+            <section id="about" class="content-section">
+
+                <div class="section-heading">
+                    <span class="tag">WHAT CAN YOU REPORT?</span>
+                    <h2>Let's Solve Community Problems Together</h2>
+                    <p>Choose a category and improve your neighbourhood.</p>
+                </div>
+
+                <div class="category-grid">
+
+                    <div class="category-card">
+                        <span>🚧</span>
+                        <h3>Road Problems</h3>
+                        <p>Potholes, damaged roads and broken footpaths.</p>
+                    </div>
+
+                    <div class="category-card">
+                        <span>🗑️</span>
+                        <h3>Garbage</h3>
+                        <p>Waste accumulation and improper disposal.</p>
+                    </div>
+
+                    <div class="category-card">
+                        <span>💧</span>
+                        <h3>Water Issues</h3>
+                        <p>Water leakage and water supply problems.</p>
+                    </div>
+
+                    <div class="category-card">
+                        <span>💡</span>
+                        <h3>Streetlights</h3>
+                        <p>Broken streetlights and dark public areas.</p>
+                    </div>
+
+                    <div class="category-card">
+                        <span>🚰</span>
+                        <h3>Drainage</h3>
+                        <p>Blocked drains and sewage problems.</p>
+                    </div>
+
+                    <div class="category-card">
+                        <span>🏗️</span>
+                        <h3>Infrastructure</h3>
+                        <p>Damaged public facilities and structures.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- HOW IT WORKS -->
+
+            <section class="how-section">
+
+                <div class="section-heading">
+                    <span class="tag">SIMPLE PROCESS</span>
+                    <h2>How CommunityConnect Works</h2>
+                </div>
+
+                <div class="steps-grid">
+
+                    <div class="step-card">
+                        <span class="step-number">01</span>
+                        <h3>📝 Report</h3>
+                        <p>Describe the problem and upload a photograph.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">02</span>
+                        <h3>🔍 Verification</h3>
+                        <p>Authorities review your complaint.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">03</span>
+                        <h3>🛠️ Resolution</h3>
+                        <p>The responsible department works on the issue.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">04</span>
+                        <h3>✅ Improvement</h3>
+                        <p>Track the progress and see the final result.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="cta-section">
+                <h2>Have You Noticed a Problem?</h2>
+                <p>Your report can make a real difference.</p>
+                <button class="primary-btn" onclick="showSection('report')">Report It Now →</button>
+            </section>
+
+        </section>
+
+
+        <!-- ================= REPORT PROBLEM ================= -->
+
+        <section id="report" class="page-section inner-page">
+
+            <div class="form-container">
+
+                <span class="tag">MAKE YOUR VOICE HEARD</span>
+                <h2>Report a Community Problem</h2>
+                <p>Provide the details below to submit your complaint.</p>
+
+                <form id="reportForm">
+
+                    <label for="title">Problem Title *</label>
+                    <input type="text" id="title" placeholder="Example: Damaged road near school" required>
+
+                    <label for="category">Problem Category *</label>
+                    <select id="category" required>
+                        <option value="">Select a category</option>
+                        <option>Road Problems</option>
+                        <option>Garbage</option>
+                        <option>Water Issues</option>
+                        <option>Streetlights</option>
+                        <option>Drainage</option>
+                        <option>Infrastructure</option>
+                        <option>Other</option>
+                    </select>
+
+                    <label for="description">Description *</label>
+                    <textarea id="description" rows="5" placeholder="Describe the problem..." required></textarea>
+
+                    <label for="location">Location *</label>
+                    <input type="text" id="location" placeholder="Enter area, street or landmark" required>
+
+                    <button type="button" class="outline-btn location-btn" onclick="getLocation()">
+                        📍 Use My Current Location
+                    </button>
+
+                    <label for="image">Upload Photograph (Maximum 1 MB)</label>
+                    <input type="file" id="image" accept="image/*">
+                    <div id="imagePreview"></div>
+
+                    <button type="submit" class="primary-btn full-btn">Submit Complaint →</button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MY COMPLAINTS ================= -->
+
+        <section id="complaints" class="page-section inner-page">
+
+            <div class="form-container wide-container">
+
+                <span class="tag">TRACK YOUR REPORTS</span>
+                <h2>My Complaints</h2>
+                <p>View and track complaints submitted by your account.</p>
+
+                <div class="filter-row">
+                    <input type="text" id="searchComplaint" placeholder="Search by complaint ID or title...">
+
+                    <select id="statusFilter">
+                        <option value="All">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div id="complaintList" class="complaint-list"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MY ACCOUNT ================= -->
+
+        <section id="account" class="page-section inner-page">
+
+            <div class="form-container wide-container">
+
+                <span class="tag">PERSONAL PROFILE</span>
+                <h2>My Account</h2>
+                <p>View your account details and complaint history.</p>
+
+                <div class="account-profile">
+
+                    <div class="large-avatar">👤</div>
+
+                    <h2 id="profileName">User Name</h2>
+                    <p id="profileEmail">user@email.com</p>
+                    <p id="profilePhone">Phone: Not available</p>
+
+                </div>
+
+
+                <h2 class="history-heading">My Complaint Summary</h2>
+
+                <div class="account-stats">
+
+                    <div class="stat-card">
+                        <h2 id="myTotalReports">0</h2>
+                        <p>Total Complaints</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h2 id="myPendingReports">0</h2>
+                        <p>Pending</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h2 id="myProgressReports">0</h2>
+                        <p>In Progress</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h2 id="myResolvedReports">0</h2>
+                        <p>Resolved</p>
+                    </div>
+
+                </div>
+
+
+                <h2 class="history-heading">Previous Complaint History</h2>
+
+                <div id="accountComplaintHistory" class="complaint-list"></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+        <div class="footer-logo">Community<span>Connect</span></div>
         <p>Building better communities through collective action.</p>
-    </div>
+        <div class="footer-bottom">© 2026 CommunityConnect. PS-14 Hackathon Project.</div>
+    </footer>
 
-    <div class="footer-bottom">
-        © 2026 CommunityConnect. PS-14 Hackathon Project.
-    </div>
-
-</footer>
+</div>
 
 
-<!-- NOTIFICATION -->
-<div id="toast" class="toast"></div>
+<!-- CENTRE NOTIFICATION -->
+
+<div id="toast" class="toast" role="alert" aria-live="assertive"></div>
 
 
-<!-- JAVASCRIPT -->
 <script src="js/script.js"></script>
 
 </body>
