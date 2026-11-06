@@ -1,0 +1,10 @@
+﻿.venv/
+__pycache__/
+*.pyc
+instance/
+*.db
+.env
+backend/reset_admin_password.py
+backend/create_admin.py
+backend/check_admin.py
+backend/test_admin_login.py
